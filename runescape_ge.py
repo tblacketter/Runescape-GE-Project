@@ -3,6 +3,7 @@
 
 import argparse
 import datetime
+import data_request as dr
 
 time_of_execution = datetime.datetime.now()
 
@@ -22,9 +23,11 @@ if not (args.refresh or args.search or args.query):
         "You must specify an option."
     )
 
+
 #For initial testing
-# if args.refresh:
-#     print("The file was refreshed.")
+if args.refresh:
+    dr.refresh()
+    print("The file was refreshed.")
 # if args.search:
 #     print(args.search)
 # if args.query:
