@@ -4,19 +4,25 @@
 import argparse
 import datetime
 import data_request as dr
+import search as s
+import refresh as r
+import sys
 
-time_of_execution = datetime.datetime.now()
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(usage=argparse.SUPPRESS)
 
 parser.add_argument("-r", "--refresh", action="store_true", help="refreshes the data file")
 
 group = parser.add_mutually_exclusive_group(required=False)
-group.add_argument("-s", "--search", metavar="NAME", help="search for an item by name, returns 3 items with the closest matching names")
-group.add_argument("-q", "--query", metavar="ID", type=int, help="provide an item id number to retrieve infomartion about the item")
+group.add_argument("-s", "--search", metavar="NAME", help="search for an item by name with input surrounded by quotes \"Name of item\"")
+group.add_argument("-q", "--query", metavar="ID", type=int, help="provide an item id number to retrieve information about the item")
 
-
-args = parser.parse_args()
+try:
+    args = parser.parse_args()
+except:
+    parser.print_help()
+    print("test")
+    sys.exit(1)
 
 if not (args.refresh or args.search or args.query):
     parser.error(
@@ -28,7 +34,8 @@ if not (args.refresh or args.search or args.query):
 if args.refresh:
     dr.refresh()
     print("The file was refreshed.")
-# if args.search:
-#     print(args.search)
+if args.search:
+     r.check_if_need_refresh()
+     s.search(args.search)
 # if args.query:
 #     print(args.query)
